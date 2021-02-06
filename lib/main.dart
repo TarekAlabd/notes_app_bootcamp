@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///D:/Work/Freelance/todo_app_bootcamp/lib/pages/home_page.dart';
+import 'package:todo_app_bootcamp/pages/home_page.dart';
 
 void main() {
   runApp(MyApp());

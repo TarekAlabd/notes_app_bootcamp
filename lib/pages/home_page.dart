@@ -1,9 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app_bootcamp/constants.dart';
+import 'package:todo_app_bootcamp/item_model.dart';
 import 'package:todo_app_bootcamp/pages/add_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<ItemModel> notes = [];
+
+  @override
+  void initState() {
+    notes = [
+      ItemModel(
+        title: 'Title 1',
+        subtitle: 'These are some characters here!',
+      ),
+      ItemModel(
+        title: 'Title 2',
+        subtitle: 'These are some characters here!',
+      ),
+    ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,14 +46,20 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
-        onPressed: () {
-          return Navigator.of(context).push(
+        onPressed: () async {
+          ItemModel result = await Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) {
                 return AddItemPage();
               },
             ),
           );
+          if (result == null)
+            return;
+          print(result);
+          setState(() {
+            notes.add(result);
+          });
         },
         child: Icon(Icons.add),
       ),
@@ -40,9 +68,9 @@ class HomePage extends StatelessWidget {
         child: ListView.separated(
           separatorBuilder: (context, index) => Divider(),
           itemCount: notes.length,
-          itemBuilder: (context, i) => ListTile(
-            title: Text(notes[i].title),
-            subtitle: Text(notes[i].subtitle),
+          itemBuilder: (ctx, index) => ListTile(
+            title: Text(notes[index].title),
+            subtitle: Text(notes[index].subtitle),
             trailing: Icon(
               Icons.chevron_right,
               color: Colors.red,
